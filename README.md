@@ -54,7 +54,7 @@ Any and all support is much appreciated:
 
 [<img src="https://img.shields.io/twitter/follow/gomarcd?style=social" alt="Follow on Twitter" height="30" style="vertical-align: middle;">](https://twitter.com/gomarcd)
 &nbsp;&nbsp;&nbsp;&nbsp;
-[<img src="https://img.shields.io/reddit/subreddit-subscribers/ipnow?label=r%2Fipnow&labelColor=FF4500&color=FF4500&logoColor=ffffff&style=for-the-badge&logo=reddit" alt="Join r/ipnow on Reddit" height="30" style="vertical-align: middle;">](https://www.reddit.com/r/ipnow/)
+[<img src="https://img.shields.io/reddit/subreddit-subscribers/tradesimple?label=r%2Ftradesimple&labelColor=FF4500&color=FF4500&logoColor=ffffff&style=for-the-badge&logo=reddit" alt="Join r/tradesimple on Reddit" height="30" style="vertical-align: middle;">](https://www.reddit.com/r/tradesimple/)
 &nbsp;&nbsp;&nbsp;&nbsp;
 [<img src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86" alt="Sponsor on GitHub" height="30" style="vertical-align: middle;">](https://github.com/sponsors/gomarcd)
 &nbsp;&nbsp;&nbsp;&nbsp;

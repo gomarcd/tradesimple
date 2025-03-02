@@ -8,9 +8,13 @@ Because none of the prominent trade journaling platforms support Wealthsimple. B
 
 Tradesimple is a modern, open-source webapp leveraging a secure, direct connection to Wealthsimple via its GraphQL API.
 
+## Disclaimer
+
+**Use at your own risk**: By using this software, and connecting your Wealthsimple account to it in particular, you accept full and absolute responsibility for any stress, inconvenience, monetary or other type of loss and/or damages in the unlikely event that anything should go wrong. I am not responsible for your use or misuse of the software in any way, shape or form.
+
 ## Security
 
-Due to the nature of the application, good security practice is paramount:
+Due to the nature of the application, every effort is made towards good security posture:
 
 :white_check_mark: Application login protected by enterprise-grade secure sign on, Oauth support with Google, Microsoft, GitHub, Apple, Multi-Factor authentication, Passkeys, Magic Auth
 
@@ -19,6 +23,10 @@ Due to the nature of the application, good security practice is paramount:
 :white_check_mark: Session audit trail with full control over Wealthsimple connection
 
 :white_check_mark: Optionally self-host your own instance for full control
+
+:white_check_mark: **On the roadmap**: SOC-2, ISO-27001, GDPR certification/compliance
+
+This is not an exhaustive list. Additional security items may also be considered in the future, such as local keychain and hardware security key support.
 
 ## Technology
 
@@ -41,6 +49,10 @@ Due to the nature of the application, good security practice is paramount:
 :white_check_mark: A clean, dynamic bird's eye view of holdings / open positions - pin favourites, sort, drag and drop
 
 :white_check_mark: Analytics & Reporting - generate custom reports with your Wealthsimple data
+
+## Roadmap
+
+Tradesimple is under active development. A roadmap is maintained at: https://gomarcd.featurebase.app/p/tradesimple-roadmap.
 
 # Support & Communities
 

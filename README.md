@@ -1,4 +1,4 @@
-# Tradesimple
+# Tradesimple 🇨🇦 
 
 A trade journaling app for Wealthsimple.
 
@@ -32,7 +32,7 @@ Due to the nature of the application, good security practice is paramount:
 
 ## Features
 
-:white_check_mark: Made in Canada, by and for Canadians - the only such platform to directly support Wealthsimple!
+:white_check_mark: 🇨🇦 Made in Canada, by and for Canadians - the only such platform to directly support Wealthsimple! 🇨🇦
 
 :white_check_mark: Trade journaling - get deep insights into your trading statistics, behaviour
 

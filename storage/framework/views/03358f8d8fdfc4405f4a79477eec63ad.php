@@ -67,9 +67,6 @@ $invalid ??= ($name && $errors->has($name));
 
 $iconLeading ??= $icon;
 
-// Clearable is not supported on xs size...
-if ($size === 'xs') $clearable = null;
-
 $hasLeadingIcon = (bool) ($iconLeading);
 $hasTrailingIcon = (bool) ($iconTrailing) || (bool) $kbd || (bool) $clearable || (bool) $copyable || (bool) $viewable || (bool) $expandable;
 $hasBothIcons = $hasLeadingIcon && $hasTrailingIcon;
@@ -247,14 +244,14 @@ $classes = Flux::classes()
                 <div class="absolute top-0 bottom-0 flex items-center justify-center pr-2 right-0">
                     <?php if (isset($component)) { $__componentOriginal5693141c88400a0f1d4127aa06fc2706 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal5693141c88400a0f1d4127aa06fc2706 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'e60dd9d2c3a62d619c9acb38f20d5aa5::input.expandable','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'e60dd9d2c3a62d619c9acb38f20d5aa5::input.expandable','data' => ['size' => $size]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('flux::input.expandable'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>
+<?php $component->withAttributes(['size' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($size)]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal5693141c88400a0f1d4127aa06fc2706)): ?>

@@ -1,4 +1,4 @@
-<?php $__currentLoopData = $exception->frames(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $frame): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<!--[if BLOCK]><![endif]--><?php $__currentLoopData = $exception->frames(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $frame): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <div
         class="sm:col-span-2"
         x-show="index === <?php echo e($loop->index); ?>"
@@ -7,13 +7,13 @@
             <div class="text-md text-gray-500 dark:text-gray-400">
                 <div class="mb-2">
 
-                    <?php if(config('app.editor')): ?>
+                    <!--[if BLOCK]><![endif]--><?php if(config('app.editor')): ?>
                         <a href="<?php echo e($frame->editorHref()); ?>" class="text-blue-500 hover:underline">
                             <span class="wrap text-gray-900 dark:text-gray-300"><?php echo e($frame->file()); ?></span>
                         </a>
                     <?php else: ?>
                         <span class="wrap text-gray-900 dark:text-gray-300"><?php echo e($frame->file()); ?></span>
-                    <?php endif; ?>
+                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                     <span class="font-mono text-xs">:<?php echo e($frame->line()); ?></span>
                 </div>
@@ -29,5 +29,5 @@
                 ><?php echo e($frame->snippet()); ?></code></template></pre>
         </div>
     </div>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 <?php /**PATH /Users/md/dev/tradesimple/vendor/laravel/framework/src/Illuminate/Foundation/Providers/../resources/exceptions/renderer/components/editor.blade.php ENDPATH**/ ?>

@@ -40,7 +40,7 @@ unset($__defined_vars); ?>
     x-data
     x-on:click="$el.querySelector('button[disabled]') || $dispatch('modal-show', { name: '<?php echo e($name); ?>' })"
     <?php if($shortcut): ?>
-        x-on:keydown.<?php echo e($shortcut); ?>.document="$dispatch('modal-show', { name: '<?php echo e($name); ?>' })"
+        x-on:keydown.<?php echo e($shortcut); ?>.document="$event.preventDefault(); $dispatch('modal-show', { name: '<?php echo e($name); ?>' })"
     <?php endif; ?>
     data-flux-modal-trigger
 >

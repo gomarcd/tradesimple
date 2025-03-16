@@ -4,6 +4,7 @@ $__newAttributes = [];
 $__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
     'name' => null,
     'message' => null,
+    'nested' => true,
 ]));
 
 foreach ($attributes->all() as $__key => $__value) {
@@ -22,6 +23,7 @@ unset($__newAttributes);
 foreach (array_filter(([
     'name' => null,
     'message' => null,
+    'nested' => true,
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 }
@@ -36,6 +38,10 @@ unset($__defined_vars); ?>
 
 <?php
 $message ??= $name ? $errors->first($name) : null;
+
+if ((is_null($message) || $message === '') && filter_var($nested, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== false) {
+    $message = $errors->first($name . '.*');
+}
 
 $classes = Flux::classes('mt-3 text-sm font-medium text-red-500 dark:text-red-400')
     ->add($message ? '' : 'hidden');

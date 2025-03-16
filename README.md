@@ -1,32 +1,17 @@
-# Tradesimple 🇨🇦 
+# Tradesimple
 
-A trade journaling app for Wealthsimple.
+A personal finance and trade journaling app for Wealthsimple.
 
 But why?
 
 Because none of the prominent trade journaling platforms support Wealthsimple. Because all of the other fintech apps out there that do support Wealthsimple, only do so via third party aggregators that are unreliable at best.
 
-Tradesimple is a modern, open-source webapp leveraging a secure, direct connection to Wealthsimple via its GraphQL API.
+Tradesimple is a modern open-source webapp leveraging a direct connection to Wealthsimple via its GraphQL API intended to fill the gap for Wealthsimple users who are underserved by existing fintech apps looking to automate the tracking of their trading and personal finance. 
 
-## Disclaimer
+🇨🇦 Made with love in Canada 🇨🇦
 
-**Use at your own risk**: By using this software, and connecting your Wealthsimple account to it in particular, you accept full and absolute responsibility for any stress, inconvenience, monetary or other type of loss and/or damages in the unlikely event that anything should go wrong. I am not responsible for your use or misuse of the software in any way, shape or form.
-
-## Security
-
-Due to the nature of the application, every effort is made towards good security posture:
-
-:white_check_mark: Application login protected by enterprise-grade secure sign on, Oauth support with Google, Microsoft, GitHub, Apple, Multi-Factor authentication, Passkeys, Magic Auth
-
-:white_check_mark: External key vault service protects Wealthsimple connection, even in the event Tradesimple's database is breached
-
-:white_check_mark: Session audit trail with full control over Wealthsimple connection
-
-:white_check_mark: Optionally self-host your own instance for full control
-
-:white_check_mark: **On the roadmap**: SOC-2, ISO-27001, GDPR certification/compliance
-
-This is not an exhaustive list. Additional security items may also be considered in the future, such as local keychain and hardware security key support.
+> [!WARNING]  
+> By using this software and connecting your Wealthsimple account(s), you accept full and absolute responsibility for any and all losses and/or damages in the unlikely event anything should go wrong.
 
 ## Technology
 
@@ -36,23 +21,33 @@ This is not an exhaustive list. Additional security items may also be considered
 
 :white_check_mark: Flux 2
 
-:white_check_mark: Docker
-
 ## Features
 
-:white_check_mark: 🇨🇦 Made in Canada, by and for Canadians - the only such platform to directly support Wealthsimple! 🇨🇦
+:white_check_mark: Connect and manage multiple Wealthsimple accounts
 
-:white_check_mark: Trade journaling - get deep insights into your trading statistics, behaviour
+:white_check_mark: Holdings page with sortable table of currently open positions, quantity, book/market values, P&L $ and % 
 
-:white_check_mark: A highly customizable, sortable, filterable dashboard with account metrics like annualized returns, comparison to market indices, total P&L, trading win rate, and more
-
-:white_check_mark: A clean, dynamic bird's eye view of holdings / open positions - pin favourites, sort, drag and drop
-
-:white_check_mark: Analytics & Reporting - generate custom reports with your Wealthsimple data
+:white_check_mark: Self-hostable
 
 ## Roadmap
 
-Tradesimple is under active development. A roadmap is maintained at: https://gomarcd.featurebase.app/p/tradesimple-roadmap.
+Tradesimple is under active development. Upcoming features include:
+
+:white_check_mark: Toggling/filtering functions for Holdings page
+
+:white_check_mark: Dashboard with key trading metrics - P&L, win rate, returns vs the market with convenient filtering/toggling for selected account, date range, symbol
+
+:white_check_mark: Trade log with notes, filtering/toggling, insights and analytics
+
+:white_check_mark: Background process to automatically refresh account data
+
+:white_check_mark: Reporting module - visualize account analytics and export to CSV, PDF
+
+:white_check_mark: Public shares - create publicly shareable links to share individual trades or let others track your trading performance
+
+:white_check_mark: Personal finance - networth and spending tracker with automatic and custom tagging/categories
+
+:white_check_mark: Import from CSV - allow easy importing of data from Wealthsimple CSV files to enable app functionality without connected accounts
 
 # Support & Communities
 

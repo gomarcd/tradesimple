@@ -57,4 +57,14 @@ class User extends Authenticatable
             ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
     }
+
+    /**
+     * Get the Wealthsimple logins for this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function wealthsimpleLogins()
+    {
+        return $this->hasMany(WealthsimpleLogin::class, 'user_id');
+    }
 }

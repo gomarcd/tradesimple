@@ -5,7 +5,7 @@ $__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
     'direction' => null,
     'sortable' => false,
     'sorted' => false,
-    'align' => 'left',
+    'align' => 'start',
 ]));
 
 foreach ($attributes->all() as $__key => $__value) {
@@ -25,7 +25,7 @@ foreach (array_filter(([
     'direction' => null,
     'sortable' => false,
     'sorted' => false,
-    'align' => 'left',
+    'align' => 'start',
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 }
@@ -42,7 +42,13 @@ unset($__defined_vars); ?>
 $classes = Flux::classes()
     ->add('py-3 px-3 first:pl-0 last:pr-0')
     ->add('text-left text-sm font-medium text-zinc-800 dark:text-white')
-    ->add($align === 'right' ? 'group/right-align' : '')
+    ->add(match($align) {
+        'center' => 'group/center-align',
+        'end' => 'group/right-align',
+        // Right is @deprecated but needed for backwards compatibility...
+        'right' => 'group/right-align',
+        default => '',
+    })
     // If the last column is sortable, remove the right negative margin that the sortable applies to itself, as the
     // negative margin caused the last column to overflow the table creating an unnecessary horizontal scrollbar...
     ->add('**:data-flux-table-sortable:last:mr-0')
@@ -51,7 +57,7 @@ $classes = Flux::classes()
 
 <th <?php echo e($attributes->class($classes)); ?> data-flux-column>
     <?php if ($sortable): ?>
-        <div class="flex in-[.group\/right-align]:justify-end">
+        <div class="flex in-[.group\/center-align]:justify-center in-[.group\/right-align]:justify-end">
             <?php if (isset($component)) { $__componentOriginal46c2ce8187bb0010344b42a2b995e67b = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal46c2ce8187bb0010344b42a2b995e67b = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'e60dd9d2c3a62d619c9acb38f20d5aa5::table.sortable','data' => ['sorted' => $sorted,'direction' => $direction]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -75,7 +81,7 @@ $classes = Flux::classes()
 <?php endif; ?>
         </div>
     <?php else: ?>
-        <div class="flex in-[.group\/right-align]:justify-end"><?php echo e($slot); ?></div>
+        <div class="flex in-[.group\/center-align]:justify-center in-[.group\/right-align]:justify-end"><?php echo e($slot); ?></div>
     <?php endif; ?>
 </th>
 <?php /**PATH /Users/md/dev/tradesimple/vendor/livewire/flux-pro/src/../stubs/resources/views/flux/table/column.blade.php ENDPATH**/ ?>

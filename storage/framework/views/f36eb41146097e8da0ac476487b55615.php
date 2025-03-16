@@ -22,11 +22,11 @@
 
 
     <style>
-        <?php $__currentLoopData = $exception->frames(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $frame): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $exception->frames(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $frame): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             #frame-<?php echo e($loop->index); ?> .hljs-ln-line[data-line-number='<?php echo e($frame->line()); ?>'] {
                 background-color: rgba(242, 95, 95, 0.4);
             }
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
     </style>
 </head>
 <body class="bg-gray-200/80 font-sans antialiased dark:bg-gray-950/95">

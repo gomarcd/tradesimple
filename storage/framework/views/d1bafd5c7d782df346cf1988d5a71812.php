@@ -33,7 +33,7 @@ foreach ($attributes->all() as $__key => $__value) {
 unset($__defined_vars); ?>
 
 <?php if ($as === 'button'): ?>
-    <button type="button" <?php echo e($attributes); ?>>
+    <button <?php echo e($attributes->merge(['type' => 'button'])); ?>>
         <?php echo e($slot); ?>
 
     </button>

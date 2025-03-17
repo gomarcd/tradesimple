@@ -113,7 +113,7 @@ new class extends Component {
             $login = WealthsimpleLogin::where('user_id', Auth::id())->where('email', $this->email)->first();
             $this->saveAudit($login->id);
 
-            $this->fetchAndCacheAllUserData($this->email);
+            $this->fetchAccountData($this->email);
             $this->loadConnectedAccounts();
             $this->reset(['email', 'password', 'otp']);
             $this->showConnectionForm = false;
@@ -164,7 +164,7 @@ new class extends Component {
             Cache::put($cacheKey, $login->session_data);
             $login->update(['is_active' => true]);
             $this->saveAudit($login->id);
-            $this->fetchAndCacheAllUserData($login->email);
+            $this->fetchAccountData($login->email);
             $this->loadConnectedAccounts();
             $this->dispatch('ws-connected');
         }
@@ -186,7 +186,7 @@ new class extends Component {
         }
     }
 
-    protected function fetchAndCacheAllUserData(string $email): void
+    protected function fetchAccountData(string $email): void
     {
         $userId = Auth::id();
         $cacheKey = 'ws_api_session_' . $userId . '_' . $email;
@@ -284,28 +284,30 @@ new class extends Component {
 
         {{-- Connection Form - Only show when no accounts exist or explicitly adding a new account --}}
         @if ($showConnectionForm || count($connectedAccounts) === 0)
-            <form wire:submit="connect" class="mt-6 space-y-6">
-                <flux:input wire:model="email" id="ws_api_email" label="{{ __('Email') }}" type="email" required autocomplete="email" />
-                <flux:input wire:model="password" id="ws_api_password" label="{{ __('Password') }}" type="password" required autocomplete="current-password" />
-                
-                @if ($errorMessage === 'OTP required. Please enter the code sent to your device.')
-                    <flux:input wire:model="otp" id="ws_api_otp" label="{{ __('2FA Code') }}" type="text" required />
-                @endif
+            <div x-data @keydown.escape.window="$wire.set('showConnectionForm', false)">
+                <form wire:submit="connect" class="mt-6 space-y-6">
+                    <flux:input wire:model="email" id="ws_api_email" label="{{ __('Email') }}" type="email" required autocomplete="email" />
+                    <flux:input wire:model="password" id="ws_api_password" label="{{ __('Password') }}" type="password" required autocomplete="current-password" />
+                    
+                    @if ($errorMessage === 'OTP required. Please enter the code sent to your device.')
+                        <flux:input wire:model="otp" id="ws_api_otp" label="{{ __('2FA Code') }}" type="text" required />
+                    @endif
 
-                @if ($errorMessage)
-                    <div class="text-red-500">{{ $errorMessage }}</div>
-                @endif
+                    @if ($errorMessage)
+                        <div class="text-red-500">{{ $errorMessage }}</div>
+                    @endif
 
-                <div class="flex items-center gap-4">
-                    <flux:button variant="primary" type="submit" class="w-full" wire:loading.attr="disabled">
-                        {{ __('Connect') }}
-                    </flux:button>
-                </div>
+                    <div class="flex items-center gap-4">
+                        <flux:button variant="primary" type="submit" class="w-full" wire:loading.attr="disabled">
+                            {{ __('Connect') }}
+                        </flux:button>
+                    </div>
 
-                <div wire:loading class="text-sm text-zinc-500">
-                    {{ __('Retrieving accounts & holdings...') }}
-                </div>
-            </form>
+                    <div wire:loading class="text-sm text-zinc-500">
+                        {{ __('Retrieving accounts & holdings...') }}
+                    </div>
+                </form>
+            </div>
         @endif
 
         {{-- Connected Accounts Table --}}

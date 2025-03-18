@@ -134,9 +134,6 @@ new class extends Component {
         if ($login && $login->is_active) {
             $cacheKey = 'ws_api_session_' . $userId . '_' . $login->email;
             Cache::forget($cacheKey);
-            Cache::forget('ws_api_cached_accounts_' . $userId . '_' . $login->email);
-            Cache::forget('ws_api_cached_positions_' . $userId . '_' . $login->email);
-            Cache::forget('ws_api_connected_account_' . $userId . '_' . $login->email);
 
             $login->update(['is_active' => false]);
             $audit = WealthsimpleConnectionAudit::where('login_id', $login->id)

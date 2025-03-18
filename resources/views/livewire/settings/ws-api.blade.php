@@ -163,6 +163,7 @@ new class extends Component {
             $this->saveAudit($login->id);
             $this->fetchAccountData($login->email);
             $this->loadConnectedAccounts();
+            Flux::toast(variant: 'success', heading: 'Connected', text: 'Wealthsimple account: ' . $login->email . ' reconnected.');
             $this->dispatch('ws-connected');
         }
     }

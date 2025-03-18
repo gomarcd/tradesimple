@@ -18,9 +18,8 @@ new class extends Component {
     {
         $userId = Auth::id();
         
-        // Get all active Wealthsimple logins for the user
+        // Get all Wealthsimple logins for user
         $this->availableLogins = WealthsimpleLogin::where('user_id', $userId)
-            ->where('is_active', true)
             ->select('id', 'email')
             ->get()
             ->toArray();

@@ -25,3 +25,4 @@ yarn-error.log
 /database/database.sqlite
 tests/*
 storage/*
+landing-page/

@@ -6,13 +6,10 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\WealthsimpleLogin;
 
 new class extends Component {
-
     public bool $connected = false;
     public array $holdings = [];
-    
-    // New properties for multi-account support
     public array $availableLogins = [];
-    public ?string $selectedEmail = null;
+    public array $selectedEmails = [];
     
     public function mount()
     {
@@ -26,18 +23,48 @@ new class extends Component {
             
         $this->connected = count($this->availableLogins) > 0;
         
-        // Get selected email from session or default to first one
-        $this->selectedEmail = session('selected_ws_login_email');
+        // Initialize selected emails from session
+        $storedEmails = session('selected_ws_login_email', null);
         
-        // If no selection or selected login not found, use first available
-        if (!$this->selectedEmail || !collect($this->availableLogins)->contains('email', $this->selectedEmail)) {
-            if (count($this->availableLogins) > 0) {
-                $this->selectedEmail = $this->availableLogins[0]['email'];
-                session(['selected_ws_login_email' => $this->selectedEmail]);
-            }
+        // Show all if user hasn't toggled selections yet
+        if ($storedEmails === null && count($this->availableLogins) > 0) {
+            $storedEmails = collect($this->availableLogins)->pluck('email')->toArray();
+        } else if (is_string($storedEmails)) {
+            $storedEmails = [$storedEmails];
         }
+        
+        $this->selectedEmails = $storedEmails ?? [];
+        
+        // Initial fetch of positions
+        $this->fetchCachedPositions();
     }
-
+    
+    // Toggle email selection
+    public function toggleEmail($email)
+    {
+        if (in_array($email, $this->selectedEmails)) {
+            // Remove email if already selected
+            $this->selectedEmails = array_values(array_filter($this->selectedEmails, function($e) use ($email) {
+                return $e !== $email;
+            }));
+        } else {
+            // Add email if not selected
+            $this->selectedEmails[] = $email;
+        }
+        
+        // Update session
+        session(['selected_ws_login_email' => $this->selectedEmails]);
+        
+        // Reload holdings
+        $this->fetchCachedPositions();
+    }
+    
+    // Check if email is selected
+    public function isSelected($email)
+    {
+        return in_array($email, $this->selectedEmails);
+    }
+    
     /**
      * Load holdings from cache into $this->holdings.
      */
@@ -45,42 +72,39 @@ new class extends Component {
     {
         $userId = Auth::id();
         
-        // If no email is selected or user has no active connections
-        if (empty($this->selectedEmail)) {
+        // If no emails are selected, clear holdings
+        if (empty($this->selectedEmails)) {
             $this->holdings = [];
             return;
         }
+
+        // Collect holdings for selected emails
+        $allHoldings = [];
+        foreach ($this->selectedEmails as $email) {
+            $cacheKey = 'ws_api_cached_positions_' . $userId . '_' . $email;
+            $cached = Cache::get($cacheKey);
+            
+            if ($cached) {
+                $holdings = collect(json_decode($cached, true))
+                    ->map(function ($holding) use ($email) {
+                        $holding['account_email'] = $email;
+                        $holding['pnlPercentage'] = $holding['book'] != 0
+                            ? ($holding['pnl'] / $holding['book']) * 100
+                            : 0;
+                        return $holding;
+                    })
+                    ->toArray();
+                
+                $allHoldings = array_merge($allHoldings, $holdings);
+            }
+        }
         
-        // Use the cache key format from ws-api.blade.php
-        $cached = Cache::get('ws_api_cached_positions_' . $userId . '_' . $this->selectedEmail);
-    
-        if ($cached) {
-            $this->holdings = collect(json_decode($cached, true))
-                ->map(function ($holding) {
-                    $holding['pnlPercentage'] = $holding['book'] != 0
-                        ? ($holding['pnl'] / $holding['book']) * 100
-                        : 0;
-                    return $holding;
-                })
-                ->sortBy([
-                    [$this->sortBy, $this->sortDirection]
-                ])
-                ->values()
-                ->toArray();
-        } else {
-            $this->holdings = [];
-        }
-    }
-    
-    /**
-     * Handle account selection change
-     */
-    public function updatedSelectedEmail($value)
-    {
-        if ($value) {
-            session(['selected_ws_login_email' => $value]);
-            $this->fetchCachedPositions();
-        }
+        $this->holdings = collect($allHoldings)
+            ->sortBy([
+                [$this->sortBy, $this->sortDirection]
+            ])
+            ->values()
+            ->toArray();
     }
 
     public string $sortBy = 'qty';
@@ -97,22 +121,31 @@ new class extends Component {
     
         $this->fetchCachedPositions();
     }
-    
 };
 ?>
 
 <div wire:init="fetchCachedPositions" class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-
     <!-- Account selector (only shown when multiple accounts exist) -->
     @if(count($availableLogins) > 1)
         <div class="flex justify-end mb-2">
             <div class="inline-flex items-center gap-2">
-                <span class="text-sm text-zinc-500">{{ __('Account:') }}</span>
-                <select wire:model.live="selectedEmail" class="rounded-md border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800">
-                    @foreach($availableLogins as $login)
-                        <option value="{{ $login['email'] }}">{{ $login['email'] }}</option>
-                    @endforeach
-                </select>
+                <flux:dropdown>
+                    <flux:button icon-trailing="chevron-down" variant="ghost">
+                        Accounts ({{ count($selectedEmails) }})
+                    </flux:button>
+                    
+                    <flux:menu>
+                        @foreach($availableLogins as $login)
+                            <flux:menu.checkbox 
+                                wire:key="{{ $login['email'] }}" 
+                                wire:click="toggleEmail('{{ $login['email'] }}')"
+                                :checked="$this->isSelected($login['email'])"
+                            >
+                                {{ $login['email'] }}
+                            </flux:menu.checkbox>
+                        @endforeach
+                    </flux:menu>
+                </flux:dropdown>
             </div>
         </div>
     @endif
@@ -130,43 +163,40 @@ new class extends Component {
         </flux:table.columns>
 
         <flux:table.rows>
-            @if(empty($holdings))
+            @forelse($holdings as $holding)
+                @php
+                    $pnlPercentage = $holding['book'] != 0 ? ($holding['pnl'] / $holding['book']) * 100 : 0;
+                    $pnlColor = $pnlPercentage < 0 ? 'text-red-400' : 'text-green-400';
+                @endphp
+                <flux:table.row>
+                    <flux:table.cell>{{ $holding['symbol'] }}</flux:table.cell>
+                    <flux:table.cell>{{ $holding['qty'] }}</flux:table.cell>
+                    <flux:table.cell>${{ number_format($holding['avg'], 2) }}</flux:table.cell>
+                    <flux:table.cell>${{ number_format($holding['price'], 2) }}</flux:table.cell>
+                    <flux:table.cell>${{ number_format($holding['book'], 2) }}</flux:table.cell>
+                    <flux:table.cell>${{ number_format($holding['market'], 2) }}</flux:table.cell>
+                    <flux:table.cell>
+                        <span class="font-bold {{ $pnlColor }}">
+                            ${{ number_format($holding['pnl'], 2) }}
+                        </span>
+                    </flux:table.cell>
+                    <flux:table.cell>
+                        <flux:badge color="{{ $pnlPercentage < 0 ? 'red' : 'green' }}">
+                            {{ $pnlPercentage < 0 ? '' : '+' }}{{ number_format($pnlPercentage, 2) }}%
+                        </flux:badge>
+                    </flux:table.cell>
+                </flux:table.row>
+            @empty
                 <flux:table.row>
                     <flux:table.cell colspan="8" class="text-center py-4">
                         @if(!$connected)
                             No connected Wealthsimple accounts found. Connect your account or refresh the data.
                         @else
-                            No holdings found for {{ $selectedEmail }}. Please check your Wealthsimple account or refresh the data.
+                            No holdings found for selected accounts. Please select an account and refresh the data.
                         @endif
                     </flux:table.cell>
                 </flux:table.row>
-            @else
-                @foreach($holdings as $holding)
-                    @php
-                        $pnlPercentage = $holding['book'] != 0 ? ($holding['pnl'] / $holding['book']) * 100 : 0;
-                        $pnlColor = $pnlPercentage < 0 ? 'text-red-400' : 'text-green-400';
-                    @endphp
-                    <flux:table.row>
-                        <flux:table.cell>{{ $holding['symbol'] }}</flux:table.cell>
-                        <flux:table.cell>{{ $holding['qty'] }}</flux:table.cell>
-                        <flux:table.cell>${{ number_format($holding['avg'], 2) }}</flux:table.cell>
-                        <flux:table.cell>${{ number_format($holding['price'], 2) }}</flux:table.cell>
-                        <flux:table.cell>${{ number_format($holding['book'], 2) }}</flux:table.cell>
-                        <flux:table.cell>${{ number_format($holding['market'], 2) }}</flux:table.cell>
-                        <flux:table.cell>
-                            <span class="font-bold {{ $pnlColor }}">
-                                ${{ number_format($holding['pnl'], 2) }}
-                            </span>
-                        </flux:table.cell>
-                        <flux:table.cell>
-                            <flux:badge color="{{ $pnlPercentage < 0 ? 'red' : 'green' }}">
-                                {{ $pnlPercentage < 0 ? '' : '+' }}{{ number_format($pnlPercentage, 2) }}%
-                            </flux:badge>
-                        </flux:table.cell>
-                    </flux:table.row>
-                @endforeach
-            @endif
+            @endforelse
         </flux:table.rows>
     </flux:table>
-
 </div>

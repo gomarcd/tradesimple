@@ -33,21 +33,21 @@ Tradesimple is a modern open-source webapp leveraging a direct connection to Wea
 
 Tradesimple is under active development. Upcoming features include:
 
+:white_check_mark: Dockerized application for easy deployment
+
 :white_check_mark: Background process to automatically keep app in sync with Wealthsimple data
 
-:white_check_mark: Toggling/filtering functions for Holdings page
+:white_check_mark: Dynamic filters/toggles/tabs and other functions for Holdings page
 
 :white_check_mark: Dashboard with key trading metrics - P&L, win rate, returns vs the market with convenient filtering/toggling for selected account, date range, symbol
 
-:white_check_mark: Trade log with notes, filtering/toggling, insights and analytics
-
-:white_check_mark: Background process to automatically refresh account data
+:white_check_mark: Trade log with notes, filtering/toggling, tags/categories, data driven insights and analytics
 
 :white_check_mark: Reporting module - visualize account analytics and export to CSV, PDF
 
 :white_check_mark: Public shares - create publicly shareable links to share individual trades or let others track your trading performance
 
-:white_check_mark: Personal finance - networth and spending tracker with automatic and custom tagging/categories
+:white_check_mark: Personal finance - networth and household spending tracker with filtering/toggling, and automatic/custom tagging/categories
 
 :white_check_mark: Import from CSV - allow easy importing of data from Wealthsimple CSV files to enable app functionality without connected accounts
 

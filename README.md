@@ -33,6 +33,8 @@ Tradesimple is a modern open-source webapp leveraging a direct connection to Wea
 
 Tradesimple is under active development. Upcoming features include:
 
+:white_check_mark: Background process to automatically keep app in sync with Wealthsimple data
+
 :white_check_mark: Toggling/filtering functions for Holdings page
 
 :white_check_mark: Dashboard with key trading metrics - P&L, win rate, returns vs the market with convenient filtering/toggling for selected account, date range, symbol

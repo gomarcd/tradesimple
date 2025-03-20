@@ -23,7 +23,9 @@ Tradesimple is a modern open-source webapp leveraging a direct connection to Wea
 
 ## Features
 
-:white_check_mark: Connect and manage multiple Wealthsimple accounts
+:white_check_mark: Dynamic UI to add multiple Wealthsimple accounts
+
+:white_check_mark: Manage existing sessions - disconnect but not delete data, or delete session and data entirely
 
 :white_check_mark: Holdings page with sortable table of currently open positions, quantity, book/market values, P&L $ and % 
 

@@ -15,11 +15,7 @@ Tradesimple is a modern open-source webapp leveraging a direct connection to Wea
 
 ## Technology
 
-:white_check_mark: Laravel 12
-
-:white_check_mark: Livewire 3
-
-:white_check_mark: Flux 2
+:white_check_mark: Laravel 12, Livewire 3 and Flux 2
 
 ## Features
 
